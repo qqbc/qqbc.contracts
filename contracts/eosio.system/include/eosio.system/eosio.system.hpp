@@ -83,8 +83,8 @@ namespace eosiosystem {
 
 
    //invitation
-   static constexpr int64_t  qqbc_max_invitor           = 2;
-   static constexpr int64_t  qqbc_max_invitee           = 2;
+   static constexpr int64_t  qqbc_max_invitor           = 3;
+   static constexpr int64_t  qqbc_max_invitee           = 3;
    /**
     *
     * @defgroup eosiosystem eosio.system
