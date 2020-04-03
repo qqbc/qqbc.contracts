@@ -1,1 +1,0 @@
-cmd='/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake;-DCMAKE_TOOLCHAIN_FILE=//usr/local/opt/eosio.cdt/lib/cmake/eosio.cdt/EosioWasmToolchain.cmake;-GCodeBlocks - Unix Makefiles;<SOURCE_DIR><SOURCE_SUBDIR>'

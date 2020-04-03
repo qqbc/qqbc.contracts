@@ -241,7 +241,7 @@ namespace eosiosystem {
        * their first vote and should consider their stake activated.
        */
       bool isNewVote = false;
-      if( voter->last_vote_weight <= 0.0 ) {
+      if( voter->last_vote_time.sec_since_epoch()== 0.0 ) {
           _gstate.total_activated_stake += voter->staked;
           if (_gstate.total_activated_stake >= min_activated_stake &&
               _gstate.thresh_activated_stake_time == time_point()) {
@@ -250,6 +250,8 @@ namespace eosiosystem {
 
           isNewVote = true;
       }
+      eosio::print("qqbc:", "last_vote_weight:", voter->last_vote_weight, " last_vote_time:", voter->last_vote_time.sec_since_epoch(), 
+          "\tisNewVote:", isNewVote, "\n");
 
       auto new_vote_weight = stake2vote( voter->staked );
       if( voter->is_proxy ) {
@@ -381,7 +383,8 @@ namespace eosiosystem {
            auto last_time = voter->last_vote_time;
            if (_gstate.thresh_activated_stake_time > voter->last_vote_time) {
                last_time = _gstate.thresh_activated_stake_time;
-               eosio::print("qqbc:", "use main net active time as the begin time", last_time.sec_since_epoch(),
+               eosio::print("qqbc:", "origin time:", voter->last_vote_time.sec_since_epoch(), 
+                   " use main net active time as the begin time", last_time.sec_since_epoch(),
                             "\n");
            }
 
@@ -391,8 +394,8 @@ namespace eosiosystem {
            //get the seconds from last vote time
            int64_t duration = (ct - last_time).to_seconds();
 
-           int64_t week = int64_t(duration / (seconds_per_day * 7) );
-           //int64_t week = int64_t(duration / (1 * 7) );
+           //int64_t week = int64_t(duration / (seconds_per_day * 7) );
+           int64_t week = int64_t(duration / (3600) );
 
            eosio::print("qqbc:", "voter:", "Reward:",
                         "\t last effective time:", last_time.sec_since_epoch(),
