@@ -407,8 +407,10 @@ namespace eosiosystem {
            if (week > 0){
                // reward is paid weekly, w means week
                // x = x * (1 + 10% + 0.2% * (w - 1)), max is 20%
+               //  x = x*(10%+0.2%*(w-1))/52 *w, max is 20%
                int64_t weight = std::min(qqbc_reward_initial + qqbc_reward_inflation * (week - 1), qqbc_reward_max);
-               int64_t to_voters = last_staked * weight / 1000;
+               //int64_t to_voters = last_staked * weight / 1000;
+               int64_t to_voters = (last_staked * weight * week) / (52 * 1000);
 
                //issue new token
                int64_t inviter_size = (iter == inviter_tbl.end())?0:iter->inviters.size();
