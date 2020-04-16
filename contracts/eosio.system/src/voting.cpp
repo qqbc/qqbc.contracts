@@ -394,8 +394,8 @@ namespace eosiosystem {
            //get the seconds from last vote time
            int64_t duration = (ct - last_time).to_seconds();
 
-           //int64_t week = int64_t(duration / (seconds_per_day * 7) );
-           int64_t week = int64_t(duration / (3600) );
+           int64_t week = int64_t(duration / (seconds_per_day * 7) );
+           //int64_t week = int64_t(duration / (3600) );
 
            eosio::print("qqbc:", "voter:", "Reward:",
                         "\t last effective time:", last_time.sec_since_epoch(),
