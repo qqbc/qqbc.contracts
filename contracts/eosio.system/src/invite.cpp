@@ -13,7 +13,6 @@ namespace eosiosystem {
             }
             check( invitees[i] != inviter, "cannot invite self");
         }
-        eosio::print("qqbc:", "invite:", "\t inviter:", inviter, "\n");
 
         for( const auto& i : invitees ) {
             add_inviter(i, inviter);
@@ -21,15 +20,11 @@ namespace eosiosystem {
    }
 
    void system_contract::add_inviter(const name& invitee, const name& inviter ){
-       eosio::print("qqbc:", "add_invitor:", "\t invitee:", invitee, "\t inviter:", inviter, "\n");
-
-
        inviters_table     inviter_tbl( get_self(), invitee.value );
        auto iter = inviter_tbl.find(invitee.value );
 
        // no inviter table
        if( iter == inviter_tbl.end() ) {
-           eosio::print("qqbc:", "insert new inviter record", "\n");
            inviter_tbl.emplace( invitee, [&]( auto& iv ){
                iv.owner = invitee;
                iv.pending_inviters.reserve(qqbc_max_invitor);
@@ -37,8 +32,6 @@ namespace eosiosystem {
            });
        }
        else {
-           eosio::print("qqbc:", "modify inviter record", "\n");
-
            check( iter->pending_inviters.size()  < qqbc_max_invitor, "attempt to accept too may inviters" );
 
            //already in the inviter list
@@ -46,7 +39,6 @@ namespace eosiosystem {
                    [&](const name& n){
                 return (n == inviter);
            })){
-               eosio::print("qqbc:", "inviter already in the list", "\n");
                return;
            };
 

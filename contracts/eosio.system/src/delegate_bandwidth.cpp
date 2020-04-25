@@ -351,7 +351,6 @@ namespace eosiosystem {
    {
       auto voter_itr = _voters.find( voter.value );
       if( voter_itr == _voters.end() ) {
-          eosio::print("qqbc:", "insert record into _voters table \n");
          voter_itr = _voters.emplace( voter, [&]( auto& v ) {
             v.owner  = voter;
             v.staked = total_update.amount;

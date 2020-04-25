@@ -227,7 +227,6 @@ namespace eosiosystem {
          }
       }
 
-      eosio::print("qqbc:", "start to update vote:", voter_name, "\n");
 
       auto voter = _voters.find( voter_name.value );
       check( voter != _voters.end(), "user must stake before they can vote" ); /// staking creates voter object
@@ -250,8 +249,6 @@ namespace eosiosystem {
 
           isNewVote = true;
       }
-      eosio::print("qqbc:", "last_vote_weight:", voter->last_vote_weight, " last_vote_time:", voter->last_vote_time.sec_since_epoch(), 
-          "\tisNewVote:", isNewVote, "\n");
 
       auto new_vote_weight = stake2vote( voter->staked );
       if( voter->is_proxy ) {
@@ -355,11 +352,6 @@ namespace eosiosystem {
            qqbc_reward(voter, voter_name, isNewVote, ct, last_staked);
        }
 
-      eosio::print("qqbc:", "update voter name:", voter_name,
-               "\t last_vote_time:", voter->last_vote_time.sec_since_epoch(),
-               "\t new vote time:", ct.sec_since_epoch(),
-               "\t last vote:", last_staked,
-               "\t new vote:", voter->staked, "\n");
 
 
       _voters.modify( voter, same_payer, [&]( auto& av ) {
@@ -383,9 +375,6 @@ namespace eosiosystem {
            auto last_time = voter->last_vote_time;
            if (_gstate.thresh_activated_stake_time > voter->last_vote_time) {
                last_time = _gstate.thresh_activated_stake_time;
-               eosio::print("qqbc:", "origin time:", voter->last_vote_time.sec_since_epoch(), 
-                   " use main net active time as the begin time", last_time.sec_since_epoch(),
-                            "\n");
            }
 
            /*
@@ -397,12 +386,6 @@ namespace eosiosystem {
            int64_t week = int64_t(duration / (seconds_per_day * 7) );
            //int64_t week = int64_t(duration / (3600) );
 
-           eosio::print("qqbc:", "voter:", "Reward:",
-                        "\t last effective time:", last_time.sec_since_epoch(),
-                        "\t current time:", ct.sec_since_epoch(),
-                        "\t effective duration:", duration,
-                        "\t effective amount:", last_staked,
-                        "\t week:", week, "\n");
 
            if (week > 0){
                // reward is paid weekly, w means week
@@ -418,12 +401,6 @@ namespace eosiosystem {
                int64_t to_per_inviter = to_voters / 10;
                int64_t new_tokens = to_voters + to_per_inviter * inviter_size;
 
-               eosio::print("qqbc:", "voter:", "Reward:",
-                            "\t weight:", double(weight)/1000,
-                            "\t to_voters:", to_voters,
-                            "\t to_per_inviter:", to_per_inviter,
-                            "\t inviter_size:", inviter_size,
-                            "\t new_tokens:", new_tokens, "\n");
 
                token::issue_action issue_act{token_account, {{get_self(), active_permission}}};
                issue_act.send(get_self(), asset(new_tokens, core_symbol()), "issue tokens for voting pay");
@@ -437,8 +414,6 @@ namespace eosiosystem {
                 * */
                if (iter != inviter_tbl.end()) {
                    for (const auto &i : iter->inviters) {
-                       eosio::print("qqbc:", "inviter:", "Reward:", "\t inviter:", i, "\t reward:", to_per_inviter,
-                                    "\n");
 
                        token::transfer_action transfer_act{token_account, {{get_self(), active_permission}}};
                        transfer_act.send(get_self(), i, asset(to_per_inviter, core_symbol()), "pay for inviter");
